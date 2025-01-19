@@ -14,9 +14,47 @@ import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class DeleteDuckTest extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Удаление утки")
+    @Test(description = "Удалить утку")
     @CitrusTest
     public void successfulDelete(@Optional @CitrusResource TestCaseRunner runner) {
+        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
 
+        deleteDuck(runner, "${duckId}");
+        validateResponse(runner, "{\n\"message\": \"Duck is deleted\"\n}");
+    }
+
+    public void deleteDuck(TestCaseRunner runner, String id) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .delete("/api/duck/delete")
+                .queryParam("id", id));
+    }
+
+    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+    }
+
+    public void createDuck(TestCaseRunner runner, String color, double height, String material, String
+            sound, String wingsState) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .post("/api/duck/create")
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{\n  \"color\": \"" + color + "\",\n"
+                        + "  \"height\": " + height + ",\n"
+                        + "  \"material\": \"" + material + "\",\n"
+                        + "  \"sound\": \"" + sound + "\",\n"
+                        + "  \"wingsState\": \"" + wingsState
+                        + "\"\n" + "}"));
     }
 }

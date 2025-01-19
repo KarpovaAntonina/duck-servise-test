@@ -14,9 +14,75 @@ import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class DuckFlyTests extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Проверить, что утка летает")
+    @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
-    public void successfulFly(@Optional @CitrusResource TestCaseRunner runner) {
+    public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
+        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
 
+        duckFly(runner, "${duckId}");
+        validateResponse(runner, "{\n\"message\": \"I can not fly :C\"\n}");
+    }
+
+    @Test(description = "Утка c активными крыльями")
+    @CitrusTest
+    public void wingsStateActive(@Optional @CitrusResource TestCaseRunner runner) {
+        createDuck(runner, "yellow", 0.01, "rubber", "quack", "ACTIVE");
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
+
+        duckFly(runner, "${duckId}");
+        validateResponse(runner, "{\n\"message\": \"I am flying :)\"\n}");
+
+    }
+    @Test(description = "Утка c активными крыльями")
+    @CitrusTest
+    public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
+        createDuck(runner, "yellow", 0.01, "rubber", "quack", "UNDEFINED");
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
+
+        duckFly(runner, "${duckId}");
+        validateResponse(runner, "{\n\"message\": \"Wings are not detected :(\"\n}");
+
+    }
+    public void duckFly(TestCaseRunner runner, String id) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .get("/api/duck/action/fly")
+                .queryParam("id", id));
+    }
+
+
+    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+    }
+
+    public void createDuck(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .post("/api/duck/create")
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{\n  \"color\": \"" + color + "\",\n"
+                        + "  \"height\": " + height + ",\n"
+                        + "  \"material\": \"" + material + "\",\n"
+                        + "  \"sound\": \"" + sound + "\",\n"
+                        + "  \"wingsState\": \"" + wingsState
+                        + "\"\n" + "}"));
     }
 }
