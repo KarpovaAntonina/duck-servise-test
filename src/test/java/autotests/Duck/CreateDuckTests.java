@@ -14,33 +14,16 @@ import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class CreateDuckTests extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Создать утку")
+    @Test(description = "Создать утку с material = rubber")
     @CitrusTest
-    public void successfulCreate(@Optional @CitrusResource TestCaseRunner runner) {
-        String color = "yellow";
-        double height = 0.01;
-        String material = "rubber";
-        String sound = "quack";
-        String wingsState = "FIXED";
+    public void successfulRubberCreate(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulMaterialCreate(runner, "rubber");
+    }
 
-        createDuck(runner, color, height, material, sound, wingsState);
-
-        String expectedResponseMessage = "{" +
-                "  \"id\": ${duckId}," +
-                "  \"color\": \"" + color + "\"," +
-                "  \"height\": " + height + "," +
-                "  \"material\": \"" + material + "\"," +
-                "  \"sound\": \"" + sound + "\"," +
-                "  \"wingsState\": \"" + wingsState + "\"" +
-                "}";
-
-        runner.$(http().client("http://localhost:2222")
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", "duckId"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(expectedResponseMessage));
+    @Test(description = "Создать утку с material = wood")
+    @CitrusTest
+    public void successfulWoodCreate(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulMaterialCreate(runner, "wood");
     }
 
     public void createDuck(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
@@ -63,5 +46,36 @@ public class CreateDuckTests extends TestNGCitrusSpringSupport {
                 .response(HttpStatus.OK)
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+    }
+
+    public String makeResponseBody(String color, double height, String material, String sound, String wingsState) {
+        return "{" +
+                "  \"id\": ${duckId}," +
+                "  \"color\": \"" + color + "\"," +
+                "  \"height\": " + height + "," +
+                "  \"material\": \"" + material + "\"," +
+                "  \"sound\": \"" + sound + "\"," +
+                "  \"wingsState\": \"" + wingsState + "\"" +
+                "}";
+    }
+
+    public void successfulMaterialCreate(TestCaseRunner runner, String material) {
+        String color = "yellow";
+        double height = 0.01;
+        String sound = "quack";
+        String wingsState = "FIXED";
+
+        createDuck(runner, color, height, material, sound, wingsState);
+
+        String expectedResponseMessage = makeResponseBody(color, height, material, sound, wingsState);
+        ;
+
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(expectedResponseMessage));
     }
 }
