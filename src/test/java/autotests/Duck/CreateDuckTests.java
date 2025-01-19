@@ -1,4 +1,4 @@
-package autotests.DuckActions;
+package autotests.Duck;
 
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
@@ -12,11 +12,11 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
-public class DuckProperties extends TestNGCitrusSpringSupport {
+public class CreateDuckTests extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Проверить характеристики утки")
+    @Test(description = "Создать утку")
     @CitrusTest
-    public void successfulProperties(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulCreate(@Optional @CitrusResource TestCaseRunner runner) {
 
     }
 }

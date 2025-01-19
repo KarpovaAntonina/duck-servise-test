@@ -12,11 +12,11 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
-public class CreateDuck extends TestNGCitrusSpringSupport {
+public class UpdateDuckTests extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Создать утку")
+    @Test(description = "Обновление утки")
     @CitrusTest
-    public void successfulCreate(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulUpdate(@Optional @CitrusResource TestCaseRunner runner) {
 
     }
 }

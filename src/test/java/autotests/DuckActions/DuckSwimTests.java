@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
-public class DuckSwim extends TestNGCitrusSpringSupport {
+public class DuckSwimTests extends TestNGCitrusSpringSupport {
 
     @Test(description = "Проверить, что утка плавает")
     @CitrusTest

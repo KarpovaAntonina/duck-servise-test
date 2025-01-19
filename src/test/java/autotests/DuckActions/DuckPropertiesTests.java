@@ -1,4 +1,4 @@
-package autotests.Duck;
+package autotests.DuckActions;
 
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
@@ -12,11 +12,11 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
-public class DeleteDuck extends TestNGCitrusSpringSupport {
+public class DuckPropertiesTests extends TestNGCitrusSpringSupport {
 
-    @Test(description = "Удаление утки")
+    @Test(description = "Проверить характеристики утки")
     @CitrusTest
-    public void successfulDelete(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulProperties(@Optional @CitrusResource TestCaseRunner runner) {
 
     }
 }
