@@ -68,7 +68,6 @@ public class CreateDuckTests extends TestNGCitrusSpringSupport {
         createDuck(runner, color, height, material, sound, wingsState);
 
         String expectedResponseMessage = makeResponseBody(color, height, material, sound, wingsState);
-        ;
 
         runner.$(http().client("http://localhost:2222")
                 .receive()

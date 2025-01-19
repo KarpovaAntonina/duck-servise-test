@@ -17,6 +17,51 @@ public class UpdateDuckTests extends TestNGCitrusSpringSupport {
     @Test(description = "Обновление утки")
     @CitrusTest
     public void successfulUpdate(@Optional @CitrusResource TestCaseRunner runner) {
+        String color = "yellow";
+        String newColor = "red";
+        double height = 0.01;
+        double newHeight = 0.02;
+        String material = "rubber";
+        String sound = "quack";
+        String wingsState = "FIXED";
 
+        createDuck(runner, color, height, material, sound, wingsState);
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
+
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .put("/api/duck/update")
+                .queryParam("id", "${duckId}")
+                .queryParam("color", newColor)
+                .queryParam("sound", sound)
+                .queryParam("material", material)
+                .queryParam("height", String.valueOf(newHeight)));
+        validateResponse(runner, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");
+    }
+
+    public void createDuck(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .post("/api/duck/create")
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{\n  \"color\": \"" + color + "\",\n"
+                        + "  \"height\": " + height + ",\n"
+                        + "  \"material\": \"" + material + "\",\n"
+                        + "  \"sound\": \"" + sound + "\",\n"
+                        + "  \"wingsState\": \"" + wingsState
+                        + "\"\n" + "}"));
+    }
+
+    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
     }
 }
