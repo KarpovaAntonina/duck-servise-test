@@ -18,5 +18,51 @@ public class DuckQuackTests extends TestNGCitrusSpringSupport {
     @CitrusTest
     public void successfulQuack(@Optional @CitrusResource TestCaseRunner runner) {
 
+        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", "duckId")));
+
+        duckQuack(runner, "${duckId}");
+        validateResponse(runner, "{\n\"sound\": \"quack\"\n}");
+    }
+
+    public void duckQuack(TestCaseRunner runner, String id) {
+        int  repetitionCount = 1;
+        int  soundCount = 1;
+
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .get("/api/duck/action/quack")
+                .queryParam("id", id)
+                .queryParam("repetitionCount", String.valueOf(repetitionCount))
+                .queryParam("soundCount", String.valueOf(soundCount)));
+    }
+
+    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+        runner.$(http().client("http://localhost:2222")
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+    }
+
+    public void createDuck(TestCaseRunner runner, String color, double height, String material, String
+            sound, String wingsState) {
+        runner.$(http().client("http://localhost:2222")
+                .send()
+                .post("/api/duck/create")
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{\n  \"color\": \"" + color + "\",\n"
+                        + "  \"height\": " + height + ",\n"
+                        + "  \"material\": \"" + material + "\",\n"
+                        + "  \"sound\": \"" + sound + "\",\n"
+                        + "  \"wingsState\": \"" + wingsState
+                        + "\"\n" + "}"));
     }
 }
+
+

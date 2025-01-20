@@ -40,14 +40,6 @@ public class CreateDuckTests extends TestNGCitrusSpringSupport {
                         + "\"\n" + "}"));
     }
 
-    public void validateResponse(TestCaseRunner runner, String responseMessage) {
-        runner.$(http().client("http://localhost:2222")
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
-    }
-
     public String makeResponseBody(String color, double height, String material, String sound, String wingsState) {
         return "{" +
                 "  \"id\": ${duckId}," +
