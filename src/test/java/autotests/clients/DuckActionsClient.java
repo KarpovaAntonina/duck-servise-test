@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
@@ -49,6 +50,23 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .response(HttpStatus.OK)
                 .message()
                 .extract(fromBody().expression("$.id", id)));
+    }
+
+    public void validateCreateResponse(TestCaseRunner runner, String id, String color, double height, String material, String sound, String wingsState) {
+        runner.$(http().client(yellowDuckService)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", id))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{" +
+                        "  \"id\": ${" + id + "}," +
+                        "  \"color\": \"" + color + "\"," +
+                        "  \"height\": " + height + "," +
+                        "  \"material\": \"" + material + "\"," +
+                        "  \"sound\": \"" + sound + "\"," +
+                        "  \"wingsState\": \"" + wingsState + "\"" +
+                        "}"));
     }
 
     public void validateResponse(TestCaseRunner runner, HttpStatus status, String responseMessage) {
