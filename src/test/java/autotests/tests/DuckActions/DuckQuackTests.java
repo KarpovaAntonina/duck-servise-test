@@ -7,11 +7,7 @@ import com.consol.citrus.annotations.CitrusTest;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
-
 import java.util.concurrent.atomic.AtomicReference;
-
-import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class DuckQuackTests extends DuckActionsClient {
 
@@ -45,6 +41,6 @@ public class DuckQuackTests extends DuckActionsClient {
         }
 
         duckQuack(runner, "${duckId}");
-        validateResponse(runner, "{\n\"sound\": \"quack\"\n}");
+        validateResponse(runner, HttpStatus.OK, "{\n\"sound\": \"quack\"\n}");
     }
 }

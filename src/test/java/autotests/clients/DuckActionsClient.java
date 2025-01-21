@@ -51,12 +51,13 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .extract(fromBody().expression("$.id", id)));
     }
 
-    public void validateResponse(TestCaseRunner runner, String responseMessage) {
+    public void validateResponse(TestCaseRunner runner, HttpStatus status, String responseMessage) {
         runner.$(http().client(yellowDuckService)
                 .receive()
-                .response(HttpStatus.OK)
+                .response(status)
                 .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE).body(responseMessage));
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(responseMessage));
     }
 
     public void createDuck(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
