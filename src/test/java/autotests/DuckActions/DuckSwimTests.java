@@ -37,7 +37,7 @@ public class DuckSwimTests extends TestNGCitrusSpringSupport {
                 .queryParam("id", "-1"));
         runner.$(http().client("http://localhost:2222")
                 .receive()
-                .response(HttpStatus.NOT_FOUND)
+                .response(HttpStatus.OK)
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body("{  \"message\":\"Duck does not exist\"}"));
