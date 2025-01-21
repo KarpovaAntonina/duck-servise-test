@@ -7,20 +7,49 @@ import com.consol.citrus.annotations.CitrusTest;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class DuckQuackTests extends DuckActionsClient {
 
-    @Test(description = "Проверить, что утка крякает")
+    @Test(description = "Проверить, что утка с нечетным id крякает")
     @CitrusTest
-    public void successfulQuack(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulQuackOddId(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulQuack(runner, true);
+    }
+
+    @Test(description = "Проверить, что утка с четным id крякает")
+    @CitrusTest
+    public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulQuack(runner, false);
+    }
+
+    public void successfulQuack(@Optional @CitrusResource TestCaseRunner runner, boolean isOdd) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
                 .extract(fromBody().expression("$.id", "duckId")));
+
+        AtomicReference<String> str = new AtomicReference<>("");
+        runner.$(action -> {
+            str.set(action.getVariable("duckId"));
+        });
+
+        int id = Integer.parseInt(str.get());
+        int rest = isOdd ? 1 : 0;
+
+        if (id % 2 == rest) {
+            createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+            runner.$(http().client(yellowDuckService)
+                    .receive()
+                    .response(HttpStatus.OK)
+                    .message()
+                    .extract(fromBody().expression("$.id", "duckId")));
+        }
 
         duckQuack(runner, "${duckId}");
         validateResponse(runner, "{\n\"sound\": \"quack\"\n}");
