@@ -44,6 +44,13 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("soundCount", String.valueOf(soundCount)));
     }
 
+    public void duckProperties(TestCaseRunner runner, String id) {
+        runner.$(http().client(yellowDuckService)
+                .send()
+                .get("/api/duck/action/properties")
+                .queryParam("id", id));
+    }
+
     public void saveDuckId(TestCaseRunner runner, String id) {
         runner.$(http().client(yellowDuckService)
                 .receive()
@@ -61,6 +68,21 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body("{" +
                         "  \"id\": ${" + id + "}," +
+                        "  \"color\": \"" + color + "\"," +
+                        "  \"height\": " + height + "," +
+                        "  \"material\": \"" + material + "\"," +
+                        "  \"sound\": \"" + sound + "\"," +
+                        "  \"wingsState\": \"" + wingsState + "\"" +
+                        "}"));
+    }
+
+    public void validatePropResponse(TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
+        runner.$(http().client(yellowDuckService)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body("{" +
                         "  \"color\": \"" + color + "\"," +
                         "  \"height\": " + height + "," +
                         "  \"material\": \"" + material + "\"," +
