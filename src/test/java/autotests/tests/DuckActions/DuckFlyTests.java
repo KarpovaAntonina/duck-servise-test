@@ -39,8 +39,8 @@ public class DuckFlyTests extends DuckActionsClient {
 
         duckFly(runner, "${duckId}");
         validateResponse(runner, "{\n\"message\": \"I am flying :)\"\n}");
-
     }
+
     @Test(description = "Утка c активными крыльями")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
@@ -53,12 +53,5 @@ public class DuckFlyTests extends DuckActionsClient {
 
         duckFly(runner, "${duckId}");
         validateResponse(runner, "{\n\"message\": \"Wings are not detected :(\"\n}");
-
-    }
-    public void duckFly(TestCaseRunner runner, String id) {
-        runner.$(http().client(yellowDuckService)
-                .send()
-                .get("/api/duck/action/fly")
-                .queryParam("id", id));
     }
 }

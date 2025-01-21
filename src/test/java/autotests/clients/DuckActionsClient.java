@@ -24,6 +24,25 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", id));
     }
 
+    public void duckFly(TestCaseRunner runner, String id) {
+        runner.$(http().client(yellowDuckService)
+                .send()
+                .get("/api/duck/action/fly")
+                .queryParam("id", id));
+    }
+
+    public void duckQuack(TestCaseRunner runner, String id) {
+        int repetitionCount = 1;
+        int soundCount = 1;
+
+        runner.$(http().client(yellowDuckService)
+                .send()
+                .get("/api/duck/action/quack")
+                .queryParam("id", id)
+                .queryParam("repetitionCount", String.valueOf(repetitionCount))
+                .queryParam("soundCount", String.valueOf(soundCount)));
+    }
+
     public void validateResponse(TestCaseRunner runner, String responseMessage) {
         runner.$(http().client(yellowDuckService)
                 .receive()
