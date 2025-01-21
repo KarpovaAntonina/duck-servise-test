@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
-
-import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class DuckSwimTests extends DuckActionsClient {
@@ -18,11 +16,7 @@ public class DuckSwimTests extends DuckActionsClient {
     @CitrusTest
     public void successfulSwim(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.15, "rubber", "quack", "FIXED");
-        runner.$(http().client(yellowDuckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", "duckId")));
+        saveDuckId(runner,"duckId");
 
         duckSwim(runner, "${duckId}");
         validateResponse(runner, "{\n\"message\": \"I am swimming\"\n}");

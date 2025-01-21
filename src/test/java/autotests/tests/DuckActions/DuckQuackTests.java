@@ -7,6 +7,7 @@ import com.consol.citrus.annotations.CitrusTest;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
@@ -28,11 +29,7 @@ public class DuckQuackTests extends DuckActionsClient {
 
     public void successfulQuack(@Optional @CitrusResource TestCaseRunner runner, boolean isOdd) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        runner.$(http().client(yellowDuckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", "duckId")));
+        saveDuckId(runner, "duckId");
 
         AtomicReference<String> str = new AtomicReference<>("");
         runner.$(action -> {
@@ -44,11 +41,7 @@ public class DuckQuackTests extends DuckActionsClient {
 
         if (id % 2 == rest) {
             createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-            runner.$(http().client(yellowDuckService)
-                    .receive()
-                    .response(HttpStatus.OK)
-                    .message()
-                    .extract(fromBody().expression("$.id", "duckId")));
+            saveDuckId(runner, "duckId");
         }
 
         duckQuack(runner, "${duckId}");

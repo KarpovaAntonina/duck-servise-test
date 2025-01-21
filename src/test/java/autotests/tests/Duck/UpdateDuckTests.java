@@ -4,12 +4,8 @@ import autotests.clients.DuckActionsClient;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
-
-import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 public class UpdateDuckTests extends DuckActionsClient {
 
@@ -25,11 +21,7 @@ public class UpdateDuckTests extends DuckActionsClient {
         String wingsState = "FIXED";
 
         createDuck(runner, color, height, material, sound, wingsState);
-        runner.$(http().client(yellowDuckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", "duckId")));
+        saveDuckId(runner,"duckId");
 
         updateDuck(runner, "${duckId}", newColor, newHeight, material, sound, wingsState);
         validateResponse(runner, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");

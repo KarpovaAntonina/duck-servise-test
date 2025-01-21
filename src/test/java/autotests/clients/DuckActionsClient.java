@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-
+import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
@@ -43,6 +43,14 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("soundCount", String.valueOf(soundCount)));
     }
 
+    public void saveDuckId(TestCaseRunner runner, String id) {
+        runner.$(http().client(yellowDuckService)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .extract(fromBody().expression("$.id", id)));
+    }
+
     public void validateResponse(TestCaseRunner runner, String responseMessage) {
         runner.$(http().client(yellowDuckService)
                 .receive()
@@ -65,7 +73,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                         + "\"\n" + "}"));
     }
 
-    public void updateDuck(TestCaseRunner runner,String id, String color, double height, String material, String sound, String wingsState) {
+    public void updateDuck(TestCaseRunner runner, String id, String color, double height, String material, String sound, String wingsState) {
         runner.$(http().client(yellowDuckService)
                 .send()
                 .put("/api/duck/update")
