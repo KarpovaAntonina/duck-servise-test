@@ -31,14 +31,7 @@ public class UpdateDuckTests extends DuckActionsClient {
                 .message()
                 .extract(fromBody().expression("$.id", "duckId")));
 
-        runner.$(http().client(yellowDuckService)
-                .send()
-                .put("/api/duck/update")
-                .queryParam("id", "${duckId}")
-                .queryParam("color", newColor)
-                .queryParam("sound", sound)
-                .queryParam("material", material)
-                .queryParam("height", String.valueOf(newHeight)));
+        updateDuck(runner, "${duckId}", newColor, newHeight, material, sound, wingsState);
         validateResponse(runner, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");
     }
 }

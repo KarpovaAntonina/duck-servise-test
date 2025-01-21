@@ -65,4 +65,21 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                         + "\"\n" + "}"));
     }
 
+    public void updateDuck(TestCaseRunner runner,String id, String color, double height, String material, String sound, String wingsState) {
+        runner.$(http().client(yellowDuckService)
+                .send()
+                .put("/api/duck/update")
+                .queryParam("id", id)
+                .queryParam("color", color)
+                .queryParam("sound", sound)
+                .queryParam("material", material)
+                .queryParam("height", String.valueOf(height)));
+    }
+
+    public void deleteDuck(TestCaseRunner runner, String id) {
+        runner.$(http().client(yellowDuckService)
+                .send()
+                .delete("/api/duck/delete")
+                .queryParam("id", id));
+    }
 }

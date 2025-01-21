@@ -26,11 +26,4 @@ public class DeleteDuckTest extends DuckActionsClient {
         deleteDuck(runner, "${duckId}");
         validateResponse(runner, "{\n\"message\": \"Duck is deleted\"\n}");
     }
-
-    public void deleteDuck(TestCaseRunner runner, String id) {
-        runner.$(http().client(yellowDuckService)
-                .send()
-                .delete("/api/duck/delete")
-                .queryParam("id", id));
-    }
 }
