@@ -12,13 +12,13 @@ public class DuckPropertiesTests extends DuckActionsClient {
 
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
-    public void successfulProperties1(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
         successfulProperties(runner, false, "rubber");
     }
 
     @Test(description = "ID - целое четное число, утка с material = wood")
     @CitrusTest
-    public void successfulProperties2(@Optional @CitrusResource TestCaseRunner runner) {
+    public void successfulEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
         successfulProperties(runner, true, "wood");
     }
 

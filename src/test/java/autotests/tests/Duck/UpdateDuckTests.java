@@ -10,21 +10,29 @@ import org.testng.annotations.Test;
 
 public class UpdateDuckTests extends DuckActionsClient {
 
-    @Test(description = "Обновление утки")
+    @Test(description = "Обновление цвета и высоты утки")
     @CitrusTest
-    public void successfulUpdate(@Optional @CitrusResource TestCaseRunner runner) {
-        String color = "yellow";
-        String newColor = "red";
-        double height = 0.01;
-        double newHeight = 0.02;
-        String material = "rubber";
-        String sound = "quack";
-        String wingsState = "FIXED";
+    public void successfulColorHeightUpdate(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulUpdate(runner,
+                "yellow", 0.01, "rubber", "quack", "FIXED",
+                "red", 0.02, "rubber", "quack", "FIXED");
+    }
 
+    @Test(description = "Обновление цвета и звука утки")
+    @CitrusTest
+    public void successfulColorSoundUpdate(@Optional @CitrusResource TestCaseRunner runner) {
+        successfulUpdate(runner,
+                "yellow", 0.01, "rubber", "quack", "FIXED",
+                "red", 0.01, "rubber", "ogo", "FIXED");
+    }
+
+    public void successfulUpdate(@Optional @CitrusResource TestCaseRunner runner,
+                                 String color, double height, String material, String sound, String wingsState,
+                                 String newColor, double newHeight, String newMaterial, String newSound, String newWingsState) {
         createDuck(runner, color, height, material, sound, wingsState);
         saveDuckId(runner, "duckId");
 
-        updateDuck(runner, "${duckId}", newColor, newHeight, material, sound, wingsState);
+        updateDuck(runner, "${duckId}", newColor, newHeight, newMaterial, newSound, newWingsState);
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");
     }
 }

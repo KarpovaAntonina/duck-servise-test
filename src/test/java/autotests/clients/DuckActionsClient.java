@@ -106,12 +106,13 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .post("/api/duck/create")
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("{\n" + "  \"color\": \"" + color + "\",\n"
+                .body("{\n"
+                        + "  \"color\": \"" + color + "\",\n"
                         + "  \"height\": " + height + ",\n"
                         + "  \"material\": \"" + material + "\",\n"
                         + "  \"sound\": \"" + sound + "\",\n"
-                        + "  \"wingsState\": \"" + wingsState
-                        + "\"\n" + "}"));
+                        + "  \"wingsState\": \"" + wingsState + "\"\n"
+                        + "}"));
     }
 
     public void updateDuck(TestCaseRunner runner, String id, String color, double height, String material, String sound, String wingsState) {
