@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
@@ -17,6 +19,15 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
 
     @Autowired
     protected HttpClient yellowDuckService;
+
+    protected boolean isEvenVariable(TestCaseRunner runner, String id) {
+        AtomicInteger duckId = new AtomicInteger(0);
+        runner.$(action -> {
+            duckId.set(Integer.parseInt(action.getVariable(id)));
+        });
+
+        return (duckId.get() % 2 == 0);
+    }
 
     public void duckSwim(TestCaseRunner runner, String id) {
         runner.$(http().client(yellowDuckService)
@@ -51,7 +62,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", id));
     }
 
-    public void saveDuckId(TestCaseRunner runner, String id) {
+    public void extractId(TestCaseRunner runner, String id) {
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(HttpStatus.OK)

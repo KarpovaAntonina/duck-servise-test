@@ -14,7 +14,7 @@ public class DuckFlyTests extends DuckActionsClient {
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I can not fly :C\"\n}");
@@ -24,17 +24,17 @@ public class DuckFlyTests extends DuckActionsClient {
     @CitrusTest
     public void wingsStateActive(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "ACTIVE");
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I am flying :)\"\n}");
     }
 
-    @Test(description = "Утка c активными крыльями")
+    @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "UNDEFINED");
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Wings are not detected :(\"\n}");

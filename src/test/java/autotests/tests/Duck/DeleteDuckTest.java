@@ -14,7 +14,7 @@ public class DeleteDuckTest extends DuckActionsClient {
     @CitrusTest
     public void successfulDelete(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
         deleteDuck(runner, "${duckId}");
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Duck is deleted\"\n}");

@@ -12,16 +12,25 @@ public class CreateDuckTests extends DuckActionsClient {
     @Test(description = "Создать утку с material = rubber")
     @CitrusTest
     public void successfulRubberCreate(@Optional @CitrusResource TestCaseRunner runner) {
-        successfulCreate(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        String color = "yellow";
+        double height = 0.01;
+        String material = "rubber";
+        String sound = "quack";
+        String wingsState = "FIXED";
+
+        createDuck(runner, color, height, material, sound, wingsState);
+        validateCreateResponse(runner, "duckId", color, height, material, sound, wingsState);
     }
 
     @Test(description = "Создать утку с material = wood")
     @CitrusTest
     public void successfulWoodCreate(@Optional @CitrusResource TestCaseRunner runner) {
-        successfulCreate(runner, "yellow", 0.01, "wood", "quack", "FIXED");
-    }
+        String color = "yellow";
+        double height = 0.01;
+        String material = "rubber";
+        String sound = "quack";
+        String wingsState = "FIXED";
 
-    public void successfulCreate(@Optional @CitrusResource TestCaseRunner runner, String color, double height, String material, String sound, String wingsState) {
         createDuck(runner, color, height, material, sound, wingsState);
         validateCreateResponse(runner, "duckId", color, height, material, sound, wingsState);
     }

@@ -14,7 +14,7 @@ public class DuckSwimTests extends DuckActionsClient {
     @CitrusTest
     public void successfulSwim(@Optional @CitrusResource TestCaseRunner runner) {
         createDuck(runner, "yellow", 0.15, "rubber", "quack", "FIXED");
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
         duckSwim(runner, "${duckId}");
         validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I am swimming\"\n}");

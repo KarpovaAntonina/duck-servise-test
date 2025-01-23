@@ -6,42 +6,45 @@ import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DuckPropertiesTests extends DuckActionsClient {
 
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
-    public void successfulOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        successfulProperties(runner, false, "rubber");
-    }
-
-    @Test(description = "ID - целое четное число, утка с material = wood")
-    @CitrusTest
-    public void successfulEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        successfulProperties(runner, true, "wood");
-    }
-
-    public void successfulProperties(@Optional @CitrusResource TestCaseRunner runner, boolean isEven, String material) {
+    public void successfulRubberIdOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
+        String material = "rubber";
         String color = "yellow";
         double height = 0.01;
         String sound = "quack";
         String wingsState = "FIXED";
 
         createDuck(runner, color, height, material, sound, wingsState);
-        saveDuckId(runner, "duckId");
+        extractId(runner, "duckId");
 
-        AtomicReference<String> str = new AtomicReference<>("");
-        runner.$(action -> {
-            str.set(action.getVariable("duckId"));
-        });
-
-        int id = Integer.parseInt(str.get());
-        int rest = isEven ? 1 : 0;
-
-        if (id % 2 == rest) {
+        if (isEvenVariable(runner, "duckId")) {
             createDuck(runner, color, height, material, sound, wingsState);
-            saveDuckId(runner, "duckId");
+            extractId(runner, "duckId");
+        }
+
+        duckProperties(runner, "${duckId}");
+        validatePropResponse(runner, color, height, material, sound, wingsState);
+    }
+
+    @Test(description = "ID - целое четное число, утка с material = wood")
+    @CitrusTest
+    public void successfulWoodIdEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
+        String material = "wood";
+        String color = "yellow";
+        double height = 0.01;
+        String sound = "quack";
+        String wingsState = "FIXED";
+
+        createDuck(runner, color, height, material, sound, wingsState);
+        extractId(runner, "duckId");
+
+        if (!isEvenVariable(runner, "duckId")) {
+            createDuck(runner, color, height, material, sound, wingsState);
+            extractId(runner, "duckId");
         }
 
         duckProperties(runner, "${duckId}");
