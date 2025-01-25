@@ -88,19 +88,13 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                         "}"));
     }
 
-    public void validatePropResponse(TestCaseRunner runner, String color, double height, String material, String sound, WingState wingsState) {
+    public void validatePropResponse(TestCaseRunner runner, Object body) {
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("{" +
-                        "  \"color\": \"" + color + "\"," +
-                        "  \"height\": " + height + "," +
-                        "  \"material\": \"" + material + "\"," +
-                        "  \"sound\": \"" + sound + "\"," +
-                        "  \"wingsState\": \"" + wingsState + "\"" +
-                        "}"));
+                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
     }
 
     public void validateResponse(TestCaseRunner runner, HttpStatus status, String resourcePath) {

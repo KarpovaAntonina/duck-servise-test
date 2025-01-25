@@ -15,12 +15,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
     public void successfulRubberIdOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        String material = "rubber";
-        String color = "yellow";
-        double height = 0.01;
-        String sound = "quack";
-        WingState wingsState = WingState.FIXED;
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
         extractId(runner, "duckId");
@@ -31,19 +26,14 @@ public class DuckPropertiesTests extends DuckActionsClient {
         }
 
         duckProperties(runner, "${duckId}");
-        validatePropResponse(runner, color, height, material, sound, wingsState);
+        validatePropResponse(runner, duck);
     }
 
     // Тест не проходит, если материал не "rubber", пустое тело ответа
     @Test(description = "ID - целое четное число, утка с material = wood")
     @CitrusTest
     public void successfulWoodIdEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        String material = "wood";
-        String color = "yellow";
-        double height = 0.01;
-        String sound = "quack";
-        WingState wingsState = WingState.FIXED;
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck().color("yellow").height(0.01).material("wood").sound("quack").wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
         extractId(runner, "duckId");
@@ -54,7 +44,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
         }
 
         duckProperties(runner, "${duckId}");
-        validatePropResponse(runner, color, height, material, sound, wingsState);
+        validatePropResponse(runner, duck);
     }
 }
 
