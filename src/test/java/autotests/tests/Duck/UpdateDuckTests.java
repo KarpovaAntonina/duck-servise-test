@@ -28,7 +28,7 @@ public class UpdateDuckTests extends DuckActionsClient {
         extractId(runner, "duckId");
 
         updateDuck(runner, "${duckId}", newColor, newHeight, material, sound, wingsState);
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulUpdate.json");
     }
 
     @Test(description = "Обновление цвета и звука утки")
@@ -47,6 +47,6 @@ public class UpdateDuckTests extends DuckActionsClient {
         extractId(runner, "duckId");
 
         updateDuck(runner, "${duckId}", newColor, height, material, newSound, wingsState);
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Duck with id = ${duckId} is updated\"\n}");
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulUpdate.json");
     }
 }

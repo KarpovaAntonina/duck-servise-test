@@ -21,7 +21,7 @@ public class DuckFlyTests extends DuckActionsClient {
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I can not fly :C\"\n}");
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/unsuccessfulFly.json");
     }
 
     @Test(description = "Утка c активными крыльями")
@@ -33,7 +33,7 @@ public class DuckFlyTests extends DuckActionsClient {
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I am flying :)\"\n}");
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulFly.json");
     }
 
     @Test(description = "Утка c крыльями в неопределенном состоянии")
@@ -41,10 +41,11 @@ public class DuckFlyTests extends DuckActionsClient {
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
         Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.UNDEFINED);
 
-        createDuck(runner, duck);
+        createDuck(runner, duck);  // Возможно утка с крыльями UNDEFINED вообще не должна создаваться?
+        // (в документации нет такого состояния крыльев). Этот тест нужно перенести в Create? В задании он должен быть в этом эндпоинте.
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Wings are not detected :(\"\n}");
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/notExistDuck.json");
     }
 }

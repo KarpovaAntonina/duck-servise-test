@@ -47,10 +47,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", id));
     }
 
-    public void duckQuack(TestCaseRunner runner, String id) {
-        int repetitionCount = 1;
-        int soundCount = 1;
-
+    public void duckQuack(TestCaseRunner runner, String id, int repetitionCount, int soundCount) {
         runner.$(http().client(yellowDuckService)
                 .send()
                 .get("/api/duck/action/quack")
@@ -106,13 +103,22 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                         "}"));
     }
 
-    public void validateResponse(TestCaseRunner runner, HttpStatus status, String responseMessage) {
+    public void validateResponse(TestCaseRunner runner, HttpStatus status, String resourcePath) {
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(status)
                 .message()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ClassPathResource(responseMessage)));
+                .body(new ClassPathResource(resourcePath)));
+    }
+
+    public void validateResponseMessage(TestCaseRunner runner, HttpStatus status, String responseMessage) {
+        runner.$(http().client(yellowDuckService)
+                .receive()
+                .response(status)
+                .message()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(responseMessage));
     }
 
     public void createDuck(TestCaseRunner runner, Object body) {

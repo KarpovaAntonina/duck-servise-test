@@ -30,7 +30,7 @@ public class CreateDuckTests extends DuckActionsClient {
     public void successfulWoodCreate(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
         double height = 0.01;
-        String material = "rubber";
+        String material = "wood";
         String sound = "quack";
         WingState wingsState = WingState.FIXED;
         Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);

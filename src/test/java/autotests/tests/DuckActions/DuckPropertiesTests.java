@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 public class DuckPropertiesTests extends DuckActionsClient {
 
+    // Тест не проходит, так как в ответе height*100
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
     public void successfulRubberIdOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
@@ -33,6 +34,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
         validatePropResponse(runner, color, height, material, sound, wingsState);
     }
 
+    // Тест не проходит, если материал не "rubber", пустое тело ответа
     @Test(description = "ID - целое четное число, утка с material = wood")
     @CitrusTest
     public void successfulWoodIdEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
