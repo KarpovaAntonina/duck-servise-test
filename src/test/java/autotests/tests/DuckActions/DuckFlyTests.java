@@ -1,6 +1,8 @@
 package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -13,7 +15,9 @@ public class DuckFlyTests extends DuckActionsClient {
     @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
@@ -23,7 +27,9 @@ public class DuckFlyTests extends DuckActionsClient {
     @Test(description = "Утка c активными крыльями")
     @CitrusTest
     public void wingsStateActive(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "ACTIVE");
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.ACTIVE);
+
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");
@@ -33,7 +39,9 @@ public class DuckFlyTests extends DuckActionsClient {
     @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "UNDEFINED");
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.UNDEFINED);
+
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         duckFly(runner, "${duckId}");

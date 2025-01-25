@@ -1,6 +1,8 @@
 package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -13,11 +15,13 @@ public class DuckQuackTests extends DuckActionsClient {
     @Test(description = "Проверить, что утка с нечетным id крякает")
     @CitrusTest
     public void successfulQuackOddId(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         if (isEvenVariable(runner, "duckId")) {
-            createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+            createDuck(runner, duck);
             extractId(runner, "duckId");
         }
 
@@ -28,11 +32,13 @@ public class DuckQuackTests extends DuckActionsClient {
     @Test(description = "Проверить, что утка с четным id крякает")
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         if (!isEvenVariable(runner, "duckId")) {
-            createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
+            createDuck(runner, duck);
             extractId(runner, "duckId");
         }
 

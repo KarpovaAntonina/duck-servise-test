@@ -1,6 +1,8 @@
 package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -16,13 +18,14 @@ public class DuckPropertiesTests extends DuckActionsClient {
         String color = "yellow";
         double height = 0.01;
         String sound = "quack";
-        String wingsState = "FIXED";
+        WingState wingsState = WingState.FIXED;
+        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
 
-        createDuck(runner, color, height, material, sound, wingsState);
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         if (isEvenVariable(runner, "duckId")) {
-            createDuck(runner, color, height, material, sound, wingsState);
+            createDuck(runner, duck);
             extractId(runner, "duckId");
         }
 
@@ -37,13 +40,14 @@ public class DuckPropertiesTests extends DuckActionsClient {
         String color = "yellow";
         double height = 0.01;
         String sound = "quack";
-        String wingsState = "FIXED";
+        WingState wingsState = WingState.FIXED;
+        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
 
-        createDuck(runner, color, height, material, sound, wingsState);
+        createDuck(runner, duck);
         extractId(runner, "duckId");
 
         if (!isEvenVariable(runner, "duckId")) {
-            createDuck(runner, color, height, material, sound, wingsState);
+            createDuck(runner, duck);
             extractId(runner, "duckId");
         }
 
