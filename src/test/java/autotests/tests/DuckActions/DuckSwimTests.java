@@ -34,6 +34,6 @@ public class DuckSwimTests extends DuckActionsClient {
     @CitrusTest
     public void notExistsNotSwim(@Optional @CitrusResource TestCaseRunner runner) {
         duckSwimById(runner, -1);
-        validateResponse(runner, HttpStatus.NOT_FOUND, "duckActionsTest/notExistDuck.json");
+        validateResponse(runner, HttpStatus.NOT_FOUND, "duckTest/notExistDuck.json");
     }
 }

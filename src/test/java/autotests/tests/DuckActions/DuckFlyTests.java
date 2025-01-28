@@ -61,6 +61,6 @@ public class DuckFlyTests extends DuckActionsClient {
         extractId(runner);
 
         duckFly(runner);
-        validateResponse(runner, HttpStatus.OK, "duckActionsTest/notExistDuck.json");
+        validateResponse(runner, HttpStatus.OK, "duckTest/notExistDuck.json");
     }
 }

@@ -26,6 +26,6 @@ public class DeleteDuckTest extends DuckActionsClient {
         extractId(runner);
 
         deleteDuck(runner);
-        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulDelete.json");
+        validateResponse(runner, HttpStatus.OK, "duckTest/successfulDelete.json");
     }
 }
