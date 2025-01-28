@@ -1,6 +1,8 @@
 package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -8,35 +10,69 @@ import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
+
 public class DuckQuackTests extends DuckActionsClient {
 
     @Test(description = "Проверить, что утка с нечетным id крякает")
     @CitrusTest
     public void successfulQuackOddId(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        extractId(runner, "duckId");
+        int repetitionCount = 2;
+        int soundCount = 3;
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
-        if (isEvenVariable(runner, "duckId")) {
-            createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-            extractId(runner, "duckId");
+        createDuck(runner, duck);
+        extractId(runner);
+
+        if (isEvenVariable(runner)) {
+            createDuck(runner, duck);
+            extractId(runner);
         }
 
-        duckQuack(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"sound\": \"quack\"\n}");
+        duckQuack(runner, repetitionCount, soundCount);
+        validateResponseMessage(
+                runner,
+                HttpStatus.OK,
+                "{\n\"sound\": \"" + getQuackMessage(repetitionCount, soundCount) + "\"\n}"
+        );
     }
 
+    // Тест не проходит, так как утка "moo"
     @Test(description = "Проверить, что утка с четным id крякает")
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        extractId(runner, "duckId");
+        int repetitionCount = 2;
+        int soundCount = 3;
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
-        if (!isEvenVariable(runner, "duckId")) {
-            createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-            extractId(runner, "duckId");
+        createDuck(runner, duck);
+        extractId(runner);
+
+        if (!isEvenVariable(runner)) {
+            createDuck(runner, duck);
+            extractId(runner);
         }
 
-        duckQuack(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"sound\": \"quack\"\n}");
+        duckQuack(runner, repetitionCount, soundCount);
+        validateResponseMessage(
+                runner,
+                HttpStatus.OK,
+                "{\n\"sound\": \"" + getQuackMessage(repetitionCount, soundCount) + "\"\n}"
+        );
+    }
+
+    private String getQuackMessage(int repetitionCount, int soundCount) {
+        String repeatedSound = String.join("-", Collections.nCopies(repetitionCount, "quack"));
+        return String.join(", ", Collections.nCopies(soundCount, repeatedSound));
     }
 }

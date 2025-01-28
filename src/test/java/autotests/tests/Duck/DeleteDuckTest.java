@@ -1,6 +1,8 @@
 package autotests.tests.Duck;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -13,10 +15,17 @@ public class DeleteDuckTest extends DuckActionsClient {
     @Test(description = "Удалить утку")
     @CitrusTest
     public void successfulDelete(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        extractId(runner, "duckId");
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
-        deleteDuck(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Duck is deleted\"\n}");
+        createDuck(runner, duck);
+        extractId(runner);
+
+        deleteDuck(runner);
+        validateResponse(runner, HttpStatus.OK, "duckTest/successfulDelete.json");
     }
 }

@@ -1,6 +1,8 @@
 package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
+import autotests.payloads.Duck;
+import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -10,33 +12,57 @@ import org.testng.annotations.Test;
 
 public class DuckFlyTests extends DuckActionsClient {
 
+    // Тест не проходит, так как expected 'I can’t fly' but was 'I can not fly :C'
     @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "FIXED");
-        extractId(runner, "duckId");
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
-        duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I can not fly :C\"\n}");
+        createDuck(runner, duck);
+        extractId(runner);
+
+        duckFly(runner);
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/unsuccessfulFly.json");
     }
 
     @Test(description = "Утка c активными крыльями")
     @CitrusTest
     public void wingsStateActive(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "ACTIVE");
-        extractId(runner, "duckId");
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.ACTIVE);
 
-        duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"I am flying :)\"\n}");
+        createDuck(runner, duck);
+        extractId(runner);
+
+        duckFly(runner);
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulFly.json");
     }
 
+    // Тест не проходит, так как expected 'Duck does not exist' but was 'Wings are not detected :('
     @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
-        createDuck(runner, "yellow", 0.01, "rubber", "quack", "UNDEFINED");
-        extractId(runner, "duckId");
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.UNDEFINED);
 
-        duckFly(runner, "${duckId}");
-        validateResponse(runner, HttpStatus.OK, "{\n\"message\": \"Wings are not detected :(\"\n}");
+        createDuck(runner, duck);  // Возможно утка с крыльями UNDEFINED вообще не должна создаваться?
+        // (в документации нет такого состояния крыльев). Этот тест нужно перенести в Create? В задании он должен быть в этом эндпоинте.
+        extractId(runner);
+
+        duckFly(runner);
+        validateResponse(runner, HttpStatus.OK, "duckTest/notExistDuck.json");
     }
 }
