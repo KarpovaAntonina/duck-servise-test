@@ -2,7 +2,7 @@ package autotests.tests.Duck;
 
 import autotests.clients.DuckActionsClient;
 import autotests.payloads.Duck;
-import autotests.payloads.WingState;
+import autotests.payloads.WingsState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -22,7 +22,7 @@ public class CreateDuckTests extends DuckActionsClient {
         double height = 0.01;
         String material = "rubber";
         String sound = "quack";
-        WingState wingsState = WingState.FIXED;
+        WingsState wingsState = WingsState.FIXED;
         Duck duck = new Duck()
                 .color(color)
                 .height(height)
@@ -41,7 +41,7 @@ public class CreateDuckTests extends DuckActionsClient {
         double height = 0.01;
         String material = "wood";
         String sound = "quack";
-        WingState wingsState = WingState.FIXED;
+        WingsState wingsState = WingsState.FIXED;
         Duck duck = new Duck()
                 .color(color)
                 .height(height)

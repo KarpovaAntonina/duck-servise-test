@@ -1,7 +1,7 @@
 package autotests.clients;
 
 import autotests.EndpointConfig;
-import autotests.payloads.WingState;
+import autotests.payloads.WingsState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
@@ -89,7 +89,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
     }
 
     @Step("Валидация ответа создания уточки")
-    public void validateCreateResponse(TestCaseRunner runner, String color, double height, String material, String sound, WingState wingsState) {
+    public void validateCreateResponse(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(HttpStatus.OK)
@@ -147,7 +147,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
     }
 
     @Step("Эндпоинт для обновления уточки")
-    public void updateDuck(TestCaseRunner runner, String color, double height, String material, String sound, WingState wingsState) {
+    public void updateDuck(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
         runner.$(http().client(yellowDuckService)
                 .send()
                 .put("/api/duck/update")
@@ -155,7 +155,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("color", color)
                 .queryParam("sound", sound)
                 .queryParam("material", material)
-                //? WingState
+                .queryParam("wingsState", String.valueOf(wingsState))
                 .queryParam("height", String.valueOf(height)));
     }
 

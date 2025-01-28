@@ -18,5 +18,5 @@ public class Duck {
     @JsonProperty("sound")
     private String sound;
     @JsonProperty("wingsState")
-    private WingState wingsState;
+    private WingsState wingsState;
 }

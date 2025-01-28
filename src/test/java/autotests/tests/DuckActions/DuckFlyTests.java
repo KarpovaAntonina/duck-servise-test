@@ -2,7 +2,7 @@ package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
 import autotests.payloads.Duck;
-import autotests.payloads.WingState;
+import autotests.payloads.WingsState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
@@ -25,7 +25,7 @@ public class DuckFlyTests extends DuckActionsClient {
                 .height(0.01)
                 .material("rubber")
                 .sound("quack")
-                .wingsState(WingState.FIXED);
+                .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
         extractId(runner);
@@ -42,7 +42,7 @@ public class DuckFlyTests extends DuckActionsClient {
                 .height(0.01)
                 .material("rubber")
                 .sound("quack")
-                .wingsState(WingState.ACTIVE);
+                .wingsState(WingsState.ACTIVE);
 
         createDuck(runner, duck);
         extractId(runner);
@@ -60,7 +60,7 @@ public class DuckFlyTests extends DuckActionsClient {
                 .height(0.01)
                 .material("rubber")
                 .sound("quack")
-                .wingsState(WingState.UNDEFINED);
+                .wingsState(WingsState.UNDEFINED);
 
         createDuck(runner, duck);  // Возможно утка с крыльями UNDEFINED вообще не должна создаваться?
         // (в документации нет такого состояния крыльев). Этот тест нужно перенести в Create? В задании он должен быть в этом эндпоинте.
