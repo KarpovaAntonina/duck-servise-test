@@ -6,9 +6,13 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+@Epic("Тесты на duck-action-controller")
+@Feature("Эндпоинт /api/duck/action/properties")
 public class DuckPropertiesTests extends DuckActionsClient {
 
     // Тест не проходит, так как в ответе height*100
@@ -25,7 +29,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
         createDuck(runner, duck);
         extractId(runner);
 
-        if (isEvenVariable(runner)) {
+        if (isEvenDuckIdVariable(runner)) {
             createDuck(runner, duck);
             extractId(runner);
         }
@@ -48,7 +52,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
         createDuck(runner, duck);
         extractId(runner);
 
-        if (!isEvenVariable(runner)) {
+        if (!isEvenDuckIdVariable(runner)) {
             createDuck(runner, duck);
             extractId(runner);
         }

@@ -6,10 +6,14 @@ import autotests.payloads.WingState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+@Epic("Тесты на duck-action-controller")
+@Feature("Эндпоинт /api/duck/action/fly")
 public class DuckFlyTests extends DuckActionsClient {
 
     // Тест не проходит, так как expected 'I can’t fly' but was 'I can not fly :C'
