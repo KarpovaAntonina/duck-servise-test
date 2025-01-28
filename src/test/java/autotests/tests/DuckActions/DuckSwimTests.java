@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 
 public class DuckSwimTests extends DuckActionsClient {
 
-    // Тест не проходит, так как ответ "Paws are not found (((("
+    // Тест не проходит, так как статус ответа NOT_FOUND с текстом "Paws are not found (((("
     @Test(description = "Проверить, что утка плавает")
     @CitrusTest
     public void successfulSwim(@Optional @CitrusResource TestCaseRunner runner) {
@@ -30,6 +30,7 @@ public class DuckSwimTests extends DuckActionsClient {
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulSwim.json");
     }
 
+    // Тест не проходит, так как ответ с текстом "Paws are not found (((("
     @Test(description = "Проверить, что несуществующая утка не плывет")
     @CitrusTest
     public void notExistsNotSwim(@Optional @CitrusResource TestCaseRunner runner) {

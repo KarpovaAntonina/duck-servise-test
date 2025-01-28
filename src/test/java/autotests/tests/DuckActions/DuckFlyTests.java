@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 public class DuckFlyTests extends DuckActionsClient {
 
+    // Тест не проходит, так как expected 'I can’t fly' but was 'I can not fly :C'
     @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
@@ -46,6 +47,7 @@ public class DuckFlyTests extends DuckActionsClient {
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulFly.json");
     }
 
+    // Тест не проходит, так как expected 'Duck does not exist' but was 'Wings are not detected :('
     @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
