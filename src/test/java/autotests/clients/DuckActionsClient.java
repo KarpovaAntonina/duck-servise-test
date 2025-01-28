@@ -27,7 +27,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
     @Autowired
     protected HttpClient yellowDuckService;
 
-    @Step("Проверка четности Id")
+    @Step("Проверка четности duckId")
     protected boolean isEvenDuckIdVariable(TestCaseRunner runner) {
         AtomicInteger duckId = new AtomicInteger(0);
         runner.$(action -> {
