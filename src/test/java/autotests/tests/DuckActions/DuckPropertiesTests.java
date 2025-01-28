@@ -15,17 +15,22 @@ public class DuckPropertiesTests extends DuckActionsClient {
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
     public void successfulRubberIdOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        if (isEvenVariable(runner, "duckId")) {
+        if (isEvenVariable(runner)) {
             createDuck(runner, duck);
-            extractId(runner, "duckId");
+            extractId(runner);
         }
 
-        duckProperties(runner, "${duckId}");
+        duckProperties(runner);
         validatePropResponse(runner, duck);
     }
 
@@ -33,17 +38,22 @@ public class DuckPropertiesTests extends DuckActionsClient {
     @Test(description = "ID - целое четное число, утка с material = wood")
     @CitrusTest
     public void successfulWoodIdEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck duck = new Duck().color("yellow").height(0.01).material("wood").sound("quack").wingsState(WingState.FIXED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("wood")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        if (!isEvenVariable(runner, "duckId")) {
+        if (!isEvenVariable(runner)) {
             createDuck(runner, duck);
-            extractId(runner, "duckId");
+            extractId(runner);
         }
 
-        duckProperties(runner, "${duckId}");
+        duckProperties(runner);
         validatePropResponse(runner, duck);
     }
 }

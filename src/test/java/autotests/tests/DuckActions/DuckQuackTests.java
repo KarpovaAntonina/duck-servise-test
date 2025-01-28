@@ -19,17 +19,22 @@ public class DuckQuackTests extends DuckActionsClient {
     public void successfulQuackOddId(@Optional @CitrusResource TestCaseRunner runner) {
         int repetitionCount = 2;
         int soundCount = 3;
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        if (isEvenVariable(runner, "duckId")) {
+        if (isEvenVariable(runner)) {
             createDuck(runner, duck);
-            extractId(runner, "duckId");
+            extractId(runner);
         }
 
-        duckQuack(runner, "${duckId}", repetitionCount, soundCount);
+        duckQuack(runner, repetitionCount, soundCount);
         validateResponseMessage(
                 runner,
                 HttpStatus.OK,
@@ -43,17 +48,22 @@ public class DuckQuackTests extends DuckActionsClient {
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
         int repetitionCount = 2;
         int soundCount = 3;
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        if (!isEvenVariable(runner, "duckId")) {
+        if (!isEvenVariable(runner)) {
             createDuck(runner, duck);
-            extractId(runner, "duckId");
+            extractId(runner);
         }
 
-        duckQuack(runner, "${duckId}", repetitionCount, soundCount);
+        duckQuack(runner, repetitionCount, soundCount);
         validateResponseMessage(
                 runner,
                 HttpStatus.OK,

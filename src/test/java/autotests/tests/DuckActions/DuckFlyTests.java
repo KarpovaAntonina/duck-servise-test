@@ -15,37 +15,52 @@ public class DuckFlyTests extends DuckActionsClient {
     @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.FIXED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/unsuccessfulFly.json");
     }
 
     @Test(description = "Утка c активными крыльями")
     @CitrusTest
     public void wingsStateActive(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.ACTIVE);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.ACTIVE);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulFly.json");
     }
 
     @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {
-        Duck duck = new Duck().color("yellow").height(0.01).material("rubber").sound("quack").wingsState(WingState.UNDEFINED);
+        Duck duck = new Duck()
+                .color("yellow")
+                .height(0.01)
+                .material("rubber")
+                .sound("quack")
+                .wingsState(WingState.UNDEFINED);
 
         createDuck(runner, duck);  // Возможно утка с крыльями UNDEFINED вообще не должна создаваться?
         // (в документации нет такого состояния крыльев). Этот тест нужно перенести в Create? В задании он должен быть в этом эндпоинте.
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        duckFly(runner, "${duckId}");
+        duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/notExistDuck.json");
     }
 }

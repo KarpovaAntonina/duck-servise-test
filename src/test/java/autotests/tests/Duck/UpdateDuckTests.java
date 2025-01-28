@@ -22,12 +22,17 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingState wingsState = WingState.FIXED;
         String newColor = "red";
         double newHeight = 0.02;
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck()
+                .color(color)
+                .height(height)
+                .material(material)
+                .sound(sound)
+                .wingsState(wingsState);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        updateDuck(runner, "${duckId}", newColor, newHeight, material, sound, wingsState);
+        updateDuck(runner, newColor, newHeight, material, sound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulUpdate.json");
     }
 
@@ -41,12 +46,17 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingState wingsState = WingState.FIXED;
         String newColor = "red";
         String newSound = "ogo";
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck()
+                .color(color)
+                .height(height)
+                .material(material)
+                .sound(sound)
+                .wingsState(wingsState);
 
         createDuck(runner, duck);
-        extractId(runner, "duckId");
+        extractId(runner);
 
-        updateDuck(runner, "${duckId}", newColor, height, material, newSound, wingsState);
+        updateDuck(runner, newColor, height, material, newSound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulUpdate.json");
     }
 }

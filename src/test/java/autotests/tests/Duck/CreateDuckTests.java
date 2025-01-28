@@ -19,10 +19,15 @@ public class CreateDuckTests extends DuckActionsClient {
         String material = "rubber";
         String sound = "quack";
         WingState wingsState = WingState.FIXED;
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck()
+                .color(color)
+                .height(height)
+                .material(material)
+                .sound(sound)
+                .wingsState(wingsState);
 
         createDuck(runner, duck);
-        validateCreateResponse(runner, "duckId", color, height, material, sound, wingsState);
+        validateCreateResponse(runner, color, height, material, sound, wingsState);
     }
 
     @Test(description = "Создать утку с material = wood")
@@ -33,9 +38,14 @@ public class CreateDuckTests extends DuckActionsClient {
         String material = "wood";
         String sound = "quack";
         WingState wingsState = WingState.FIXED;
-        Duck duck = new Duck().color(color).height(height).material(material).sound(sound).wingsState(wingsState);
+        Duck duck = new Duck()
+                .color(color)
+                .height(height)
+                .material(material)
+                .sound(sound)
+                .wingsState(wingsState);
 
         createDuck(runner, duck);
-        validateCreateResponse(runner, "duckId", color, height, material, sound, wingsState);
+        validateCreateResponse(runner, color, height, material, sound, wingsState);
     }
 }
