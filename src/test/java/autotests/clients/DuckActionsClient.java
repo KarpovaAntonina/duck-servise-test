@@ -24,8 +24,8 @@ import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
 public class DuckActionsClient extends TestNGCitrusSpringSupport {
-    protected static final String DUCK_ID_VAR_NAME = "duckId";
-    protected static final String DUCK_ID_VAR_VALUE = "${" + DUCK_ID_VAR_NAME + "}";
+    private static final String DUCK_ID_VAR_NAME = "duckId";
+    private static final String DUCK_ID_VAR_VALUE = "${" + DUCK_ID_VAR_NAME + "}";
 
     @Autowired
     protected SingleConnectionDataSource testDb;
@@ -43,7 +43,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
         return (duckId.get() % 2 == 0);
     }
 
-    @Step("Эндпоинт для плавания уточки по Id")
+    @Step("Эндпоинт для плавания утки по Id")
     public void duckSwimById(TestCaseRunner runner, int id) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -51,7 +51,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", String.valueOf(id)));
     }
 
-    @Step("Эндпоинт для плавания уточки")
+    @Step("Эндпоинт для плавания утки")
     public void duckSwim(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -59,7 +59,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", DUCK_ID_VAR_VALUE));
     }
 
-    @Step("Эндпоинт для полета уточки")
+    @Step("Эндпоинт для полета утки")
     public void duckFly(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -67,7 +67,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", DUCK_ID_VAR_VALUE));
     }
 
-    @Step("Эндпоинт для кряканья уточки")
+    @Step("Эндпоинт для кряканья утки")
     public void duckQuack(TestCaseRunner runner, int repetitionCount, int soundCount) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -77,7 +77,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("soundCount", String.valueOf(soundCount)));
     }
 
-    @Step("Эндпоинт для получения свойств уточки")
+    @Step("Эндпоинт для получения свойств утки")
     public void duckProperties(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -85,7 +85,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("id", DUCK_ID_VAR_VALUE));
     }
 
-    @Step("Извлечение id из текста ответа создания уточки")
+    @Step("Извлечение id из текста ответа создания утки")
     public void extractDuckId(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .receive()
@@ -99,7 +99,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
         runner.variable(DUCK_ID_VAR_NAME, value);
     }
 
-    @Step("Валидация ответа создания уточки")
+    @Step("Валидация ответа создания утки")
     public void validateCreateResponse(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
         runner.$(http().client(yellowDuckService)
                 .receive()
@@ -117,7 +117,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                         "}"));
     }
 
-    @Step("Валидация ответа получения свойств уточки по объекту")
+    @Step("Валидация ответа получения свойств утки по объекту")
     public void validatePropResponse(TestCaseRunner runner, Object body) {
         runner.$(http().client(yellowDuckService)
                 .receive()
@@ -147,7 +147,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .body(responseMessage));
     }
 
-    @Step("Эндпоинт для создания уточки")
+    @Step("Эндпоинт для создания утки")
     public void createDuck(TestCaseRunner runner, Object body) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -157,7 +157,27 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
     }
 
-    @Step("Эндпоинт для обновления уточки")
+    @Step("Добавление утки в базу")
+    public void insertDuckToDatabase(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
+        databaseExecute(runner,
+                "insert into DUCK (id, color, height, material, sound, wings_state)\n"
+                        + "values ("
+                        + DUCK_ID_VAR_VALUE + ", "
+                        + "'" + color + "', "
+                        + height + ", "
+                        + "'" + material + "', "
+                        + "'" + sound + "', "
+                        + "'" + wingsState + "'"
+                        + ")");
+
+    }
+
+    @Step("Удаление утки из базы")
+    public void deleteDuckFromDatabase(TestCaseRunner runner) {
+        databaseExecute(runner, "DELETE FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE);
+    }
+
+    @Step("Эндпоинт для обновления утки")
     public void updateDuck(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
         runner.$(http().client(yellowDuckService)
                 .send()
@@ -170,7 +190,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .queryParam("height", String.valueOf(height)));
     }
 
-    @Step("Эндпоинт для удаления уточки")
+    @Step("Эндпоинт для удаления утки")
     public void deleteDuck(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .send()

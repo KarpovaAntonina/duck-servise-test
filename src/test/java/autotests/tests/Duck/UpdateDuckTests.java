@@ -12,11 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
+
 @Epic("Тесты на duck-controller")
 @Feature("Эндпоинт /api/duck/update")
 public class UpdateDuckTests extends DuckActionsClient {
 
-    @Test(description = "Обновление цвета и высоты утки")
+    @Test(description = "Обновление цвета и высоты утки, с дополнительной проверкой по базе")
     @CitrusTest
     public void successfulColorHeightUpdate(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
@@ -26,21 +28,18 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingsState wingsState = WingsState.FIXED;
         String newColor = "red";
         double newHeight = 0.02;
-        Duck duck = new Duck()
-                .color(color)
-                .height(height)
-                .material(material)
-                .sound(sound)
-                .wingsState(wingsState);
+        setDuckId(runner, 12345678);
 
-        createDuck(runner, duck);
-        extractDuckId(runner);
+        runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
+        insertDuckToDatabase(runner, color, height, material, sound, wingsState);
 
         updateDuck(runner, newColor, newHeight, material, sound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckTest/successfulUpdate.json");
+
+        validateDuckInDatabase(runner, newColor, newHeight, material, sound, wingsState);
     }
 
-    @Test(description = "Обновление цвета и звука утки")
+    @Test(description = "Обновление цвета и звука утки, с дополнительной проверкой по базе")
     @CitrusTest
     public void successfulColorSoundUpdate(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
@@ -50,17 +49,14 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingsState wingsState = WingsState.FIXED;
         String newColor = "red";
         String newSound = "ogo";
-        Duck duck = new Duck()
-                .color(color)
-                .height(height)
-                .material(material)
-                .sound(sound)
-                .wingsState(wingsState);
+        setDuckId(runner, 12345678);
 
-        createDuck(runner, duck);
-        extractDuckId(runner);
+        runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
+        insertDuckToDatabase(runner, color, height, material, sound, wingsState);
 
         updateDuck(runner, newColor, height, material, newSound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckTest/successfulUpdate.json");
+
+        validateDuckInDatabase(runner, newColor, height, material, newSound, wingsState);
     }
 }

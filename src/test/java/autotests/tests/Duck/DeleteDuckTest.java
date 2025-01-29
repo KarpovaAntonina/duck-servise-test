@@ -18,7 +18,7 @@ import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 @Feature("Эндпоинт /api/duck/delete")
 public class DeleteDuckTest extends DuckActionsClient {
 
-    @Test(description = "Удалить утку")
+    @Test(description = "Удалить утку, с дополнительной проверкой по базе")
     @CitrusTest
     public void successfulDelete(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
@@ -28,18 +28,8 @@ public class DeleteDuckTest extends DuckActionsClient {
         WingsState wingsState = WingsState.FIXED;
         setDuckId(runner, 12345678);
 
-        runner.$(doFinally().actions(context ->
-                databaseExecute(runner, "DELETE FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE)));
-        databaseExecute(runner,
-                "insert into DUCK (id, color, height, material, sound, wings_state)\n"
-                        + "values ("
-                        + DUCK_ID_VAR_VALUE + ", "
-                        + "'" + color + "', "
-                        + height + ", "
-                        + "'" + material + "', "
-                        + "'" + sound + "', "
-                        + "'" + wingsState + "'"
-                        + ")");
+        runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
+        insertDuckToDatabase(runner, color, height, material, sound, wingsState);
 
         deleteDuck(runner);
         validateResponse(runner, HttpStatus.OK, "duckTest/successfulDelete.json");
