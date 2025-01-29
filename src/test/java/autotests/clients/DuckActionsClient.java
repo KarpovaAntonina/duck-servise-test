@@ -12,17 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
+import static com.consol.citrus.actions.ExecuteSQLQueryAction.Builder.query;
 import static com.consol.citrus.dsl.MessageSupport.MessageBodySupport.fromBody;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @ContextConfiguration(classes = {EndpointConfig.class})
 public class DuckActionsClient extends TestNGCitrusSpringSupport {
-    private static final String DUCK_ID_VAR_NAME = "duckId";
-    private static final String DUCK_ID_VAR_VALUE = "${" + DUCK_ID_VAR_NAME + "}";
+    protected static final String DUCK_ID_VAR_NAME = "duckId";
+    protected static final String DUCK_ID_VAR_VALUE = "${" + DUCK_ID_VAR_NAME + "}";
+
+    @Autowired
+    protected SingleConnectionDataSource testDb;
 
     @Autowired
     protected HttpClient yellowDuckService;
@@ -165,5 +171,21 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .send()
                 .delete("/api/duck/delete")
                 .queryParam("id", DUCK_ID_VAR_VALUE));
+    }
+
+    @Step("Выполнения SQL")
+    public void databaseExecute(TestCaseRunner runner, String sql) {
+        runner.$(sql(testDb).statement(sql));
+    }
+
+    @Step("Валидация данных в базе")
+    protected void validateDuckInDatabase(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
+        runner.$(query(testDb)
+                .statement("SELECT * FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE)
+                .validate("COLOR", color)
+                .validate("HEIGHT", String.valueOf(height))
+                .validate("MATERIAL", material)
+                .validate("SOUND", sound)
+                .validate("WINGS_STATE", String.valueOf(wingsState)));
     }
 }

@@ -52,4 +52,24 @@ public class CreateDuckTests extends DuckActionsClient {
         createDuck(runner, duck);
         validateCreateResponse(runner, color, height, material, sound, wingsState);
     }
+
+    @Test(description = "Создать утку и проверить по базе")
+    @CitrusTest
+    public void successfulDbCreate(@Optional @CitrusResource TestCaseRunner runner) {
+        String color = "yellow";
+        double height = 0.01;
+        String material = "wood";
+        String sound = "quack";
+        WingsState wingsState = WingsState.FIXED;
+        Duck duck = new Duck()
+                .color(color)
+                .height(height)
+                .material(material)
+                .sound(sound)
+                .wingsState(wingsState);
+
+        createDuck(runner, duck);
+        extractId(runner);
+        validateDuckInDatabase(runner, color, height, material, sound, wingsState);
+    }
 }

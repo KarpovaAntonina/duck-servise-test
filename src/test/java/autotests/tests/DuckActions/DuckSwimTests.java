@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
+
 @Epic("Тесты на duck-action-controller")
 @Feature("Эндпоинт /api/duck/action/swim")
 public class DuckSwimTests extends DuckActionsClient {
@@ -40,5 +42,19 @@ public class DuckSwimTests extends DuckActionsClient {
     public void notExistsNotSwim(@Optional @CitrusResource TestCaseRunner runner) {
         duckSwimById(runner, -1);
         validateResponse(runner, HttpStatus.NOT_FOUND, "duckTest/notExistDuck.json");
+    }
+
+    // Тест не проходит, так как статус ответа NOT_FOUND с текстом "Paws are not found (((("
+    @Test(description = "Проверить, что утка плавает (создается в базе)")
+    @CitrusTest
+    public void successfulDbSwim(@Optional @CitrusResource TestCaseRunner runner) {
+        runner.variable(DUCK_ID_VAR_NAME, "1234567");
+        runner.$(doFinally().actions(context ->
+                databaseExecute(runner, "DELETE FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE)));
+        databaseExecute(runner,
+                "insert into DUCK (id, color, height, material, sound, wings_state)\n"
+                        + "values (" + DUCK_ID_VAR_VALUE + ", 'orange', 3.0, 'cheese', 'hrum', '" + WingsState.ACTIVE + "');");
+        duckSwim(runner);
+        validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulSwim.json");
     }
 }
