@@ -8,6 +8,7 @@ import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
@@ -16,6 +17,7 @@ import org.testng.annotations.Test;
 public class DuckPropertiesTests extends DuckActionsClient {
 
     // Тест не проходит, так как в ответе height*100
+    @Flaky
     @Test(description = "ID - целое нечетное число, утка с material = rubber")
     @CitrusTest
     public void successfulRubberIdOddProperties(@Optional @CitrusResource TestCaseRunner runner) {
@@ -39,6 +41,7 @@ public class DuckPropertiesTests extends DuckActionsClient {
     }
 
     // Тест не проходит, если материал не "rubber", пустое тело ответа
+    @Flaky
     @Test(description = "ID - целое четное число, утка с material = wood")
     @CitrusTest
     public void successfulWoodIdEvenProperties(@Optional @CitrusResource TestCaseRunner runner) {

@@ -8,6 +8,7 @@ import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -17,6 +18,7 @@ import org.testng.annotations.Test;
 public class DuckFlyTests extends DuckActionsClient {
 
     // Тест не проходит, так как expected 'I can’t fly' but was 'I can not fly :C'
+    @Flaky
     @Test(description = "Утка cо связанными крыльями")
     @CitrusTest
     public void wingsStateFixed(@Optional @CitrusResource TestCaseRunner runner) {
@@ -52,6 +54,7 @@ public class DuckFlyTests extends DuckActionsClient {
     }
 
     // Тест не проходит, так как expected 'Duck does not exist' but was 'Wings are not detected :('
+    @Flaky
     @Test(description = "Утка c крыльями в неопределенном состоянии")
     @CitrusTest
     public void wingsStateUndefined(@Optional @CitrusResource TestCaseRunner runner) {

@@ -8,6 +8,7 @@ import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -47,6 +48,7 @@ public class DuckQuackTests extends DuckActionsClient {
     }
 
     // Тест не проходит, так как утка "moo"
+    @Flaky
     @Test(description = "Проверить, что утка с четным id крякает")
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {

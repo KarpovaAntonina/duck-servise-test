@@ -8,6 +8,7 @@ import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -19,6 +20,7 @@ import static com.consol.citrus.container.FinallySequence.Builder.doFinally;
 public class DuckSwimTests extends DuckActionsClient {
 
     // Тест не проходит, так как статус ответа NOT_FOUND с текстом "Paws are not found (((("
+    @Flaky
     @Test(description = "Проверить, что утка плавает")
     @CitrusTest
     public void successfulSwim(@Optional @CitrusResource TestCaseRunner runner) {
@@ -37,6 +39,7 @@ public class DuckSwimTests extends DuckActionsClient {
     }
 
     // Тест не проходит, так как ответ с текстом "Paws are not found (((("
+    @Flaky
     @Test(description = "Проверить, что несуществующая утка не плывет")
     @CitrusTest
     public void notExistsNotSwim(@Optional @CitrusResource TestCaseRunner runner) {
