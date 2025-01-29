@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 @Feature("Эндпоинт /api/duck/create")
 public class CreateDuckTests extends DuckActionsClient {
 
-    @Test(description = "Создать утку с material = rubber")
+    @Test(description = "Создать утку с material = rubber, с дополнительной проверкой по базе")
     @CitrusTest
     public void successfulRubberCreate(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
@@ -32,9 +32,11 @@ public class CreateDuckTests extends DuckActionsClient {
 
         createDuck(runner, duck);
         validateCreateResponse(runner, color, height, material, sound, wingsState);
+
+        validateDuckInDatabase(runner, color, height, material, sound, wingsState);
     }
 
-    @Test(description = "Создать утку с material = wood")
+    @Test(description = "Создать утку с material = wood, с дополнительной проверкой по базе")
     @CitrusTest
     public void successfulWoodCreate(@Optional @CitrusResource TestCaseRunner runner) {
         String color = "yellow";
@@ -51,25 +53,7 @@ public class CreateDuckTests extends DuckActionsClient {
 
         createDuck(runner, duck);
         validateCreateResponse(runner, color, height, material, sound, wingsState);
-    }
 
-    @Test(description = "Создать утку и проверить по базе")
-    @CitrusTest
-    public void successfulDbCreate(@Optional @CitrusResource TestCaseRunner runner) {
-        String color = "yellow";
-        double height = 0.01;
-        String material = "wood";
-        String sound = "quack";
-        WingsState wingsState = WingsState.FIXED;
-        Duck duck = new Duck()
-                .color(color)
-                .height(height)
-                .material(material)
-                .sound(sound)
-                .wingsState(wingsState);
-
-        createDuck(runner, duck);
-        extractId(runner);
         validateDuckInDatabase(runner, color, height, material, sound, wingsState);
     }
 }

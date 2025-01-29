@@ -34,7 +34,7 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
     protected HttpClient yellowDuckService;
 
     @Step("Проверка четности duckId")
-    protected boolean isEvenDuckIdVariable(TestCaseRunner runner) {
+    protected boolean isEvenDuckId(TestCaseRunner runner) {
         AtomicInteger duckId = new AtomicInteger(0);
         runner.$(action -> {
             duckId.set(Integer.parseInt(action.getVariable(DUCK_ID_VAR_NAME)));
@@ -86,12 +86,17 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
     }
 
     @Step("Извлечение id из текста ответа создания уточки")
-    public void extractId(TestCaseRunner runner) {
+    public void extractDuckId(TestCaseRunner runner) {
         runner.$(http().client(yellowDuckService)
                 .receive()
                 .response(HttpStatus.OK)
                 .message()
                 .extract(fromBody().expression("$.id", DUCK_ID_VAR_NAME)));
+    }
+
+    @Step("Установка переменной id")
+    public void setDuckId(TestCaseRunner runner, int value) {
+        runner.variable(DUCK_ID_VAR_NAME, value);
     }
 
     @Step("Валидация ответа создания уточки")
@@ -187,5 +192,12 @@ public class DuckActionsClient extends TestNGCitrusSpringSupport {
                 .validate("MATERIAL", material)
                 .validate("SOUND", sound)
                 .validate("WINGS_STATE", String.valueOf(wingsState)));
+    }
+
+    @Step("Валидация, что данных нет в базе")
+    protected void validateDuckInNotDatabase(TestCaseRunner runner) {
+        runner.$(query(testDb)
+                .statement("SELECT COUNT(1) AS ALL_COUNT FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE)
+                .validate("ALL_COUNT", "0"));
     }
 }

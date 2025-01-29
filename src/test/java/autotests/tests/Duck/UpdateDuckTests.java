@@ -34,7 +34,7 @@ public class UpdateDuckTests extends DuckActionsClient {
                 .wingsState(wingsState);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
         updateDuck(runner, newColor, newHeight, material, sound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckTest/successfulUpdate.json");
@@ -58,7 +58,7 @@ public class UpdateDuckTests extends DuckActionsClient {
                 .wingsState(wingsState);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
         updateDuck(runner, newColor, height, material, newSound, wingsState);
         validateResponse(runner, HttpStatus.OK, "duckTest/successfulUpdate.json");

@@ -31,11 +31,11 @@ public class DuckQuackTests extends DuckActionsClient {
                 .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (isEvenDuckIdVariable(runner)) {
+        if (isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckQuack(runner, repetitionCount, soundCount);
@@ -60,11 +60,11 @@ public class DuckQuackTests extends DuckActionsClient {
                 .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (!isEvenDuckIdVariable(runner)) {
+        if (!isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckQuack(runner, repetitionCount, soundCount);

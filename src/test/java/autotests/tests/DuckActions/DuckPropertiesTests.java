@@ -27,11 +27,11 @@ public class DuckPropertiesTests extends DuckActionsClient {
                 .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (isEvenDuckIdVariable(runner)) {
+        if (isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckProperties(runner);
@@ -50,11 +50,11 @@ public class DuckPropertiesTests extends DuckActionsClient {
                 .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (!isEvenDuckIdVariable(runner)) {
+        if (!isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckProperties(runner);

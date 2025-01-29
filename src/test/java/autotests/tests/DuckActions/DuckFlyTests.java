@@ -28,7 +28,7 @@ public class DuckFlyTests extends DuckActionsClient {
                 .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
         duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/unsuccessfulFly.json");
@@ -45,7 +45,7 @@ public class DuckFlyTests extends DuckActionsClient {
                 .wingsState(WingsState.ACTIVE);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
         duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckActionsTest/successfulFly.json");
@@ -64,7 +64,7 @@ public class DuckFlyTests extends DuckActionsClient {
 
         createDuck(runner, duck);  // Возможно утка с крыльями UNDEFINED вообще не должна создаваться?
         // (в документации нет такого состояния крыльев). Этот тест нужно перенести в Create? В задании он должен быть в этом эндпоинте.
-        extractId(runner);
+        extractDuckId(runner);
 
         duckFly(runner);
         validateResponse(runner, HttpStatus.OK, "duckTest/notExistDuck.json");
