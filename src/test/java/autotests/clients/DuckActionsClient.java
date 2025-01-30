@@ -78,58 +78,6 @@ public class DuckActionsClient extends BaseTest {
         runner.variable(DUCK_ID_VAR_NAME, value);
     }
 
-    @Step("Валидация ответа создания утки")
-    public void validateCreateResponse(TestCaseRunner runner, String color, double height, String material, String sound, WingsState wingsState) {
-        runner.$(http()
-                .client(yellowDuckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .extract(fromBody().expression("$.id", DUCK_ID_VAR_NAME))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body("{" +
-                        "  \"id\": " + DUCK_ID_VAR_VALUE + "," +
-                        "  \"color\": \"" + color + "\"," +
-                        "  \"height\": " + height + "," +
-                        "  \"material\": \"" + material + "\"," +
-                        "  \"sound\": \"" + sound + "\"," +
-                        "  \"wingsState\": \"" + wingsState + "\"" +
-                        "}"));
-    }
-
-    @Step("Валидация ответа получения свойств утки по объекту")
-    public void validatePropResponse(TestCaseRunner runner, Object body) {
-        runner.$(http()
-                .client(yellowDuckService)
-                .receive()
-                .response(HttpStatus.OK)
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ObjectMappingPayloadBuilder(body, new ObjectMapper())));
-    }
-
-    @Step("Валидация ответа по статусу и ресурсу")
-    public void validateResponse(TestCaseRunner runner, HttpStatus status, String resourcePath) {
-        runner.$(http()
-                .client(yellowDuckService)
-                .receive()
-                .response(status)
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ClassPathResource(resourcePath)));
-    }
-
-    @Step("Валидация ответа по статусу и тексту")
-    public void validateResponseMessage(TestCaseRunner runner, HttpStatus status, String responseMessage) {
-        runner.$(http()
-                .client(yellowDuckService)
-                .receive()
-                .response(status)
-                .message()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(responseMessage));
-    }
-
     @Step("Эндпоинт для создания утки")
     public void createDuck(TestCaseRunner runner, Object body) {
         sendPostRequest(runner, "/api/duck/create", body);
