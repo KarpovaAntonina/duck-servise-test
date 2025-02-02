@@ -2,16 +2,21 @@ package autotests.tests.DuckActions;
 
 import autotests.clients.DuckActionsClient;
 import autotests.payloads.Duck;
-import autotests.payloads.WingState;
+import autotests.payloads.WingsState;
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Flaky;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 
+@Epic("Тесты на duck-action-controller")
+@Feature("Эндпоинт /api/duck/action/quack")
 public class DuckQuackTests extends DuckActionsClient {
 
     @Test(description = "Проверить, что утка с нечетным id крякает")
@@ -24,14 +29,14 @@ public class DuckQuackTests extends DuckActionsClient {
                 .height(0.01)
                 .material("rubber")
                 .sound("quack")
-                .wingsState(WingState.FIXED);
+                .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (isEvenVariable(runner)) {
+        if (isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckQuack(runner, repetitionCount, soundCount);
@@ -43,6 +48,7 @@ public class DuckQuackTests extends DuckActionsClient {
     }
 
     // Тест не проходит, так как утка "moo"
+    @Flaky
     @Test(description = "Проверить, что утка с четным id крякает")
     @CitrusTest
     public void successfulQuackEvenId(@Optional @CitrusResource TestCaseRunner runner) {
@@ -53,14 +59,14 @@ public class DuckQuackTests extends DuckActionsClient {
                 .height(0.01)
                 .material("rubber")
                 .sound("quack")
-                .wingsState(WingState.FIXED);
+                .wingsState(WingsState.FIXED);
 
         createDuck(runner, duck);
-        extractId(runner);
+        extractDuckId(runner);
 
-        if (!isEvenVariable(runner)) {
+        if (!isEvenDuckId(runner)) {
             createDuck(runner, duck);
-            extractId(runner);
+            extractDuckId(runner);
         }
 
         duckQuack(runner, repetitionCount, soundCount);

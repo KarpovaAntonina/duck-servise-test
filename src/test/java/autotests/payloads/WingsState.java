@@ -1,6 +1,6 @@
 package autotests.payloads;
 
-public enum WingState {
+public enum WingsState {
     ACTIVE,
     FIXED,
     UNDEFINED
