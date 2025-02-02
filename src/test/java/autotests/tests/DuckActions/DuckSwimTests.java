@@ -43,7 +43,8 @@ public class DuckSwimTests extends DuckActionsClient {
     @Test(description = "Проверить, что несуществующая утка не плывет")
     @CitrusTest
     public void notExistsNotSwim(@Optional @CitrusResource TestCaseRunner runner) {
-        duckSwimById(runner, -1);
+        setDuckId(runner, -1);
+        duckSwim(runner);
         validateResponse(runner, HttpStatus.NOT_FOUND, "duckTest/notExistDuck.json");
     }
 }

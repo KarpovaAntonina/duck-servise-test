@@ -28,7 +28,7 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingsState wingsState = WingsState.FIXED;
         String newColor = "red";
         double newHeight = 0.02;
-        setDuckId(runner, 12345678);
+        setDuckId(runner, getMaxId(runner) + 1);
 
         runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
         insertDuckToDatabase(runner, color, height, material, sound, wingsState);
@@ -49,7 +49,7 @@ public class UpdateDuckTests extends DuckActionsClient {
         WingsState wingsState = WingsState.FIXED;
         String newColor = "red";
         String newSound = "ogo";
-        setDuckId(runner, 12345678);
+        setDuckId(runner, getMaxId(runner) + 1);
 
         runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
         insertDuckToDatabase(runner, color, height, material, sound, wingsState);
