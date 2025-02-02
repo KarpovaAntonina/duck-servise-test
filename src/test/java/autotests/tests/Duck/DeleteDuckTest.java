@@ -26,7 +26,7 @@ public class DeleteDuckTest extends DuckActionsClient {
         String material = "wood";
         String sound = "quack";
         WingsState wingsState = WingsState.FIXED;
-        setDuckId(runner, 12345678);
+        setDuckId(runner, getMaxId(runner) + 1);
 
         runner.$(doFinally().actions(context -> deleteDuckFromDatabase(runner)));
         insertDuckToDatabase(runner, color, height, material, sound, wingsState);
