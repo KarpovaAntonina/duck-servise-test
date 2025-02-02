@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static autotests.payloads.WingsState.FIXED;
@@ -133,5 +134,23 @@ public class DuckActionsClient extends BaseTest {
         runner.$(query(testDb)
                 .statement("SELECT COUNT(1) AS ALL_COUNT FROM DUCK WHERE ID=" + DUCK_ID_VAR_VALUE)
                 .validate("ALL_COUNT", "0"));
+    }
+
+    @Step("Поиск максимального id")
+    protected int getMaxId(TestCaseRunner runner) {
+        runner.$(query(testDb)
+                .statement("SELECT MAX(ID) AS MAX_ID FROM DUCK")
+                .extract("MAX_ID", DUCK_ID_VAR_NAME));
+
+        AtomicInteger duckId = new AtomicInteger(0);
+        runner.$(action -> {
+            String value = action.getVariable(DUCK_ID_VAR_NAME);
+            if (Objects.equals(value, "NULL"))
+                duckId.set(0);
+            else
+                duckId.set(Integer.parseInt(value));
+        });
+
+        return duckId.get();
     }
 }
